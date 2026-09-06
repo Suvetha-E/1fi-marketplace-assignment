@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/shop_page.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '1Fi Marketplace',
+      title: '1Fi FinTech & Marketplace',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF6B21A8),
           primary: const Color(0xFF6B21A8),
+          surface: Colors.white,
         ),
         scaffoldBackgroundColor: const Color(0xFFF8FAFC),
         appBarTheme: const AppBarTheme(
@@ -29,20 +30,20 @@ class MyApp extends StatelessWidget {
       ),
       builder: (context, child) {
         return Scaffold(
-          backgroundColor: const Color(0xFF0B0F19), // Dark desktop backdrop
+          backgroundColor: const Color(0xFF0B0F19), // Dark slate desktop backdrop
           body: Center(
             child: Container(
-              width: 390,
-              height: 800,
+              width: 400,
+              height: 820,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(36),
                 border: Border.all(color: const Color(0xFF334155), width: 10),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    blurRadius: 24,
-                    offset: const Offset(0, 12),
+                    color: Color(0x80000000),
+                    blurRadius: 28,
+                    offset: Offset(0, 12),
                   ),
                 ],
               ),
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
           ),
         );
       },
-      home: const ShopPage(),
+      home: const SplashScreen(),
     );
   }
 }
