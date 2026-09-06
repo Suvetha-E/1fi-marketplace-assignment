@@ -1,8 +1,33 @@
 import 'package:flutter/material.dart';
+import '../models/shop_models.dart';
+import '../repositories/shop_repository.dart';
+import '../widgets/state_views.dart';
 import 'marketplace_home_screen.dart';
 
-class ShopPage extends StatelessWidget {
+class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
+
+  @override
+  State<ShopPage> createState() => _ShopPageState();
+}
+
+class _ShopPageState extends State<ShopPage> {
+  final ShopRepository _shopRepository = ShopRepository();
+  late Future<List<Brand>> _brandsFuture;
+  late Future<List<Store>> _storesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() {
+    setState(() {
+      _brandsFuture = _shopRepository.fetchTopBrands();
+      _storesFuture = _shopRepository.fetchNearbyStores();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,39 +57,112 @@ class ShopPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            // A. Top Brands (Statically Populated)
-            ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                const Text('Partner Brands with No-Cost EMI', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF0F172A))),
-                const SizedBox(height: 12),
-                GridView.count(
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 1.4,
+            // A. Top Brands (Dynamic)
+            FutureBuilder<List<Brand>>(
+              future: _brandsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const LoadingView();
+                } else if (snapshot.hasError) {
+                  return ErrorView(message: 'Failed to load top brands.', onRetry: _loadData);
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const EmptyView();
+                }
+
+                final brands = snapshot.data!;
+                return ListView(
+                  padding: const EdgeInsets.all(16),
                   children: [
-                    _buildBrandCard('Apple', 'Official Partner', Colors.black, Colors.white),
-                    _buildBrandCard('Samsung', 'Exclusive Offers', Colors.blue.shade900, Colors.white),
-                    _buildBrandCard('Sony', 'Audio & Gaming', Colors.black87, Colors.white),
-                    _buildBrandCard('OnePlus', 'Zero Down Payment', Colors.red.shade800, Colors.white),
+                    const Text('Partner Brands with No-Cost EMI', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF0F172A))),
+                    const SizedBox(height: 12),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 1.4,
+                      ),
+                      itemCount: brands.length,
+                      itemBuilder: (context, index) {
+                        final brand = brands[index];
+                        return Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Color(int.parse(brand.backgroundColorHex)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(brand.name, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 4),
+                              Text(brand.subtitle, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 11)),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ],
-                ),
-              ],
+                );
+              },
             ),
             
-            // B. Nearby Stores (Statically Populated)
-            ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                const Text('Authorized Retail Outlets Nearby', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF0F172A))),
-                const SizedBox(height: 12),
-                _buildStoreCard('Croma Electronics', 'Velachery Main Road • 1.2 km away', '4.8 ★'),
-                _buildStoreCard('Reliance Digital', 'Phoenix MarketCity • 2.4 km away', '4.6 ★'),
-                _buildStoreCard('Poorvika Mobiles', 'Andavar Nagar • 3.0 km away', '4.5 ★'),
-              ],
+            // B. Nearby Stores (Dynamic)
+            FutureBuilder<List<Store>>(
+              future: _storesFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const LoadingView();
+                } else if (snapshot.hasError) {
+                  return ErrorView(message: 'Failed to load nearby stores.', onRetry: _loadData);
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const EmptyView();
+                }
+
+                final stores = snapshot.data!;
+                return ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: [
+                    const Text('Authorized Retail Outlets Nearby', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF0F172A))),
+                    const SizedBox(height: 12),
+                    ...stores.map((store) => Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(store.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF0F172A))),
+                                const SizedBox(height: 4),
+                                Text(store.details, style: const TextStyle(color: Color(0xFF64748B), fontSize: 12)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF1F5F9),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(store.rating, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF0F172A))),
+                          ),
+                        ],
+                      ),
+                    )),
+                  ],
+                );
+              },
             ),
             
             // C. 1Fi Marketplace Entry Tab
@@ -130,60 +228,6 @@ class ShopPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildBrandCard(String name, String subtitle, Color bgColor, Color textColor) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(name, style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 4),
-          Text(subtitle, style: TextStyle(color: textColor.withOpacity(0.7), fontSize: 11)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStoreCard(String title, String details, String rating) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF0F172A))),
-                const SizedBox(height: 4),
-                Text(details, style: const TextStyle(color: Color(0xFF64748B), fontSize: 12)),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF1F5F9),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(rating, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF0F172A))),
-          ),
-        ],
       ),
     );
   }
