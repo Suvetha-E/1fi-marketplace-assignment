@@ -39,3 +39,63 @@ lib/
 ├── widgets/
 │   └── state_views.dart            # Reusable Loading, Error, and Empty state UI components
 └── main.dart                       # App entry point with custom Material 3 theme configuration
+
+---
+
+**Complete Terminal Commands Reference:**
+
+Use the following commands in your terminal for development, testing, building, and version control:
+
+1. Project Setup & Dependencies
+Bash
+# Clone the repository
+git clone [https://github.com/your-username/1fi-marketplace-assignment.git](https://github.com/your-username/1fi-marketplace-assignment.git)
+cd 1fi-marketplace-assignment
+
+# Fetch all required Flutter packages and dependencies
+flutter pub get
+
+# Clean build cache if experiencing compilation issues
+flutter clean
+flutter pub get
+2. Running the Application
+Bash
+# Run the app in debug mode on Chrome (Web)
+flutter run -d chrome
+
+# Run the app on Windows Desktop
+flutter run -d windows
+
+# Interactive device selection prompt
+flutter run
+3. Testing & Analysis
+Bash
+# Run automated widget/unit tests
+flutter test
+
+# Analyze code for static errors, linter warnings, or bad formatting
+flutter analyze
+4. Building for Production
+Bash
+# Build production-ready web release bundle
+flutter build web --release
+
+# Build Windows desktop release bundle
+flutter build windows --release
+5. Git Version Control Workflow
+Bash
+# Initialize local repository (if not already done)
+git init
+
+# Stage all modified files
+git add .
+
+# Commit changes with a descriptive message
+git commit -m "Update implementation details"
+
+# Link remote origin (first time only)
+git remote add origin [https://github.com/your-username/1fi-marketplace-assignment.git](https://github.com/your-username/1fi-marketplace-assignment.git)
+
+# Push changes to GitHub main branch
+git branch -M main
+git push -u origin main
