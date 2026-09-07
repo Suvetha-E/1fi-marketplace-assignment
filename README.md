@@ -10,16 +10,16 @@ Designed with **Clean Architecture**, **Material 3 Design System**, and a **Deep
 
 | Assignment Requirement | Exact Terminology / Scope | Implementation Status | Features & Technical Details |
 | :--- | :--- | :--- | :--- |
-| **Main Shop Container** | **`Shop`** | **Complete** | Main tabbed screen titled **Shop** with 3 top segmented tabs. |
-| **Option A** | **`Top Brands`** | **Complete** | Partner brands grid (Apple, Samsung, Sony, OnePlus, Bose, Dell Pro) with 0% No-Cost EMI badges & instant discounts. |
-| **Option B** | **`Nearby Stores`** | **Complete** | Authorized retail outlets with live distance metrics (`1.2 km away`), ratings, store categories, search bar, and open/closed status. |
-| **Option C** | **`1Fi Marketplace`** | **Complete** | End-to-end marketplace experience: search filters, category chips, dynamic pricing, variants, EMI breakdown, and instant booking CTA. |
-| **Product Browsing** | **Product Listing** | **Complete** | Search queries & category filter chips ('Smartphones', 'Laptops', 'Audio', 'Wearables', 'Gaming'). |
-| **Product Details** | **Details & Variants** | **Complete** | Multi-image gallery carousel, specs table, and variant selection chips (Storage/RAM/Color) updating total price. |
-| **EMI Financing** | **EMI Options & CTA** | **Complete** | Tenure breakdown (3 to 24m), No-Cost EMI highlights vs standard rates, down payment selector, and instant confirmation sheet. |
-| **Data & APIs** | **Decoupled Telemetry** | **Complete** | Mock repositories (`UserRepository`, `ShopRepository`, `MarketplaceRepository`) simulating async backend latency. |
-| **State Handling** | **Async View States** | **Complete** | Explicit `LoadingView`, `ErrorView` (with retry button), and `EmptyView` (with reset filter CTA). |
-| **Quality & Polish** | **Zero Errors & Lints** | **Complete** | `flutter analyze` passed with **0 errors, 0 warnings**, and zero layout overflow issues. |
+| **Main Shop Container** | **`Shop`** | **Completed** | Main tabbed screen titled **Shop** with 3 top segmented tabs. |
+| **Option A** | **`Top Brands`** | **Completed** | Partner brands grid (Apple, Samsung, Sony, OnePlus, Bose, Dell Pro) with 0% No-Cost EMI badges & instant discounts. |
+| **Option B** | **`Nearby Stores`** | **Completed** | Authorized retail outlets with live distance metrics (`1.2 km away`), ratings, store categories, search bar, and open/closed status. |
+| **Option C** | **`1Fi Marketplace`** | **Completed** | End-to-end marketplace experience: search filters, category chips, dynamic pricing, variants, EMI breakdown, and instant booking CTA. |
+| **Product Browsing** | **Product Listing** | **Completed** | Search queries & category filter chips ('Smartphones', 'Laptops', 'Audio', 'Wearables', 'Gaming'). |
+| **Product Details** | **Details & Variants** | **Completed** | Multi-image gallery carousel, specs table, and variant selection chips (Storage/RAM/Color) updating total price. |
+| **EMI Financing** | **EMI Options & CTA** | **Completed** | Tenure breakdown (3 to 24m), No-Cost EMI highlights vs standard rates, down payment selector, and instant confirmation sheet. |
+| **Data & APIs** | **Decoupled Telemetry** | **Completed** | Mock repositories (`UserRepository`, `ShopRepository`, `MarketplaceRepository`) simulating async backend latency. |
+| **State Handling** | **Async View States** | **Completed** | Explicit `LoadingView`, `ErrorView` (with retry button), and `EmptyView` (with reset filter CTA). |
+| **Quality & Polish** | **Zero Errors & Lints** | **Completed** | `flutter analyze` passed with **0 errors, 0 warnings**, and zero layout overflow issues. |
 
 ---
 
